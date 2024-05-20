@@ -28,17 +28,17 @@ float consec(int m, int n) {
             if (n % min == 0) {
                 return count;
             }
-            min -= 1;
+            min--;
         } else
-            min -= 1;
+            min--;
     } 
 }
 
 float modified(int m, int n) {
     float count = 1;
     while (m != n) {
-        count++;
         (m > n)? (m = m - n) : (n = n - m);
+        count++;
     }
     return count;
 }
