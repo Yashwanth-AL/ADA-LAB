@@ -38,8 +38,8 @@ float consec(int m, int n) {
 float modified(int m, int n) {
     float count = 0;
     while (m != n) {
-        count++;
         (m > n) ? (m = m - n) : (n = n - m);
+        count++;
     }
     printf("GCD = %d\n", m);
     return count;
