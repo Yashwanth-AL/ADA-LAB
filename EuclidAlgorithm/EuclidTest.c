@@ -29,9 +29,9 @@ float consec(int m, int n) {
                 printf("GCD = %d\n", min);
                 return count;
             }
-            min -= 1;
+            min --;
         } else
-            min -= 1;
+            min --;
     } 
 }
 
