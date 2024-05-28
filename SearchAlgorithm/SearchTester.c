@@ -1,81 +1,68 @@
-#include <stdio.h> 
-#include <stdlib.h> 
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
 
-int linearSearch(int *a, int n, int key) { 
-    for (int i = 0; i < n; i++) { 
-        if (a[i] == key) { 
-            return i; 
-        } 
-    } 
-    return -1; 
-} 
-
-int binarySearch(int *a, int low, int high, int key) { 
-    while (low <= high) { 
-        int mid = low + (high - low) / 2; 
-        if (a[mid] == key) 
-            return mid; 
-        else if (a[mid] > key) 
-            high = mid - 1; 
-        else 
-            low = mid + 1; 
-    } 
-    return -1; 
-} 
-
-void inputArray(int *a, int n) {
-    printf("ENTER THE ELEMENTS OF THE ARRAY\n"); 
-    for (int i = 0; i < n; i++) { 
-        scanf("%d", &a[i]); 
-    }
-}
-
-void sortArray(int *a, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (a[j] > a[j + 1]) {
-                int temp = a[j];
-                a[j] = a[j + 1];
-                a[j + 1] = temp;
-            }
+int linearSearch(int *a, int key, int n) {
+    for (int i = 0; i < n; i++) {
+        if (*(a + i) == key) {
+            return i;
         }
     }
+    return -1;
 }
 
-int main() { 
-    int arr[100]; 
-    int n, key, result, ch; 
+int binarySearch(int *a, int key, int low, int high) {
+    int mid;
+    if (low <= high) {
+        mid = low + (high - low) / 2;
+        if (*(a + mid) == key)
+            return mid;
+        else if (*(a + mid) > key) 
+            return binarySearch(a, key, low, mid - 1);
+        else
+            return binarySearch(a, key, mid + 1, high);
+    }
+    return -1;
+}
 
-    while (1) { 
-        printf("1. TO LINEAR SEARCH\n2. TO BINARY SEARCH\n3. TO EXIT\n"); 
-        scanf("%d", &ch); 
+int main() {
+    int n, key, index, choice;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter %d elements into the array\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
 
-        if (ch == 3) break;
+    printf("\nSearching algorithms\n");
+    printf("1. Linear search.\n");
+    printf("2. Binary search.\n");
+    printf("0. Exit\n");
+    do {
+        printf("\nEnter your choice from the menu: ");
+        scanf("%d", &choice);
 
-        printf("ENTER THE NUMBER OF ELEMENTS\n"); 
-        scanf("%d", &n); 
-        inputArray(arr, n);
-
-        printf("ENTER THE KEY ELEMENT\n"); 
-        scanf("%d", &key); 
-
-        switch (ch) { 
-            case 1: 
-                result = linearSearch(arr, n, key); 
-                break; 
-            case 2: 
-                sortArray(arr, n); 
-                result = binarySearch(arr, 0, n - 1, key); 
-                break; 
-            default: 
-                continue; 
-        } 
-
-        if (result != -1) { 
-            printf("The element is present at the index %d\n", result); 
-        } else { 
-            printf("Element not found\n"); 
-        } 
-    } 
-    return 0; 
+        switch (choice) {
+            case 1:
+                printf("Enter the element to search for: ");
+                scanf("%d", &key);
+                index = linearSearch(arr, key, n);
+                if (index != -1)
+                    printf("Element found at index %d\n", index);
+                else    
+                    printf("Element not found\n");
+                break;
+            case 2:
+                printf("Enter the element to search for: ");
+                scanf("%d", &key);
+                index = binarySearch(arr, key, 0, n - 1);
+                if (index != -1)
+                    printf("Element found at index %d\n", index);
+                else    
+                    printf("Element not found\n");
+                break;
+        }
+    } while (choice != 0);
+    return 0;
 }
