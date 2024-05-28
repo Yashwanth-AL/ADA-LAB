@@ -49,8 +49,8 @@ int main() {
     int choice, m, n;
     printf("GCD\n");
     printf("1. Euclid's method.\n");
-    printf("2. Consecutive Integer method.\n");
-    printf("3. Modified Euclid's method.\n");
+    printf("2. Modified Euclid's method.\n");
+    printf("3. Consecutive Integer method.\n");
     printf("0. Exit\n");
     do {
         printf("\nEnter your choice : ");

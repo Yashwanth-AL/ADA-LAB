@@ -88,7 +88,7 @@ void plotter2() {
         count = 0;
         r = binarySearch(0, arr, n - 1, 0);
         fprintf(f1, "%d\t%d\n",n, r);
-        printf("%d\t%d\n", n, count);
+        // printf("%d\t%d\n", n, count);
 
         for (int i = 0; i < n; i++) {
             *(arr + i) = rand() % n;
@@ -97,7 +97,7 @@ void plotter2() {
         count = 0;
         r = binarySearch(-1, arr, n - 1, 0);
         fprintf(f2, "%d\t%d\n", n, r);
-        printf("%d\t%d\n", n, count);
+        // printf("%d\t%d\n", n, count);
 
 
         for (int i = 0; i < n; i++) {
@@ -106,7 +106,7 @@ void plotter2() {
         count = 0;
         r = binarySearch(1, arr, n - 1, 0);
         fprintf(f3, "%d\t%d\n", n ,r);
-        printf("%d\t%d\n", n, count);
+        // printf("%d\t%d\n", n, count);
 
         n = n * 2;
         free(arr);
