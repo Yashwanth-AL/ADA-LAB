@@ -80,7 +80,7 @@ void tester()
     printf("Enter the number of elements : "); 
     scanf("%d", &n); 
     arr = (int *)malloc(sizeof(int) * n); 
-    printf("Enter the elements of thre array : \n"); 
+    printf("Enter the elements of the array : \n"); 
     for (int i = 0; i < n; i++) 
         scanf("%d", &arr[i]); 
  

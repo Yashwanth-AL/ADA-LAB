@@ -1,6 +1,7 @@
 #include<stdio.h> 
 #include<stdlib.h> 
 #include<time.h> 
+
 int count; 
 void merge(int *arr,int beg,int mid,int end) 
 { 
@@ -75,10 +76,10 @@ void main()
    int *arr,n; 
    srand(time(NULL)); 
    FILE *f1,*f2,*f3,*f4; 
-   f1=fopen("MERGESORTBEST.txt","a"); 
-   f2=fopen("MERGESORTWORST.txt","a"); 
-   f3=fopen("MERGESORTAVG.txt","a"); 
-   f4=fopen("WORSTDATA.txt","a"); 
+   f1=fopen("m_b.txt","a"); 
+   f2=fopen("m_w.txt","a"); 
+   f3=fopen("m_a.txt","a"); 
+   f4=fopen("worst.txt","a"); 
  
     for(n=2;n<=1024;n=n*2) 
     { 
