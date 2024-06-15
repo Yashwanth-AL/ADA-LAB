@@ -7,18 +7,17 @@ int count;
 int bubblesort(int *a, int n) 
 { 
     count = 0; 
-    int i, j, t, flag = 0; 
-    for (i = 0; i < n - 1; i++) 
+    for (int i = 0; i < n - 1; i++) 
     { 
-        flag = 0; 
-        for (j = 0; j < n - i - 1; j++)     
+        int flag = 0; 
+        for (int j = 0; j < n - i - 1; j++)     
         { 
             count++;     
             if (a[j] > a[j + 1]) 
             { 
-                t = *(a + j); 
-                *(a + j) = *(a + j + 1); 
-                *(a + j + 1) = t; 
+                int temp = a[j]; 
+                a[j] = a[j+1]; 
+                a[j+1] = temp; 
                 flag = 1; 
             }   
         } 
@@ -30,35 +29,35 @@ int bubblesort(int *a, int n)
 
 void plotter() 
 { 
-    int *arr, n; 
+    int *arr, n = 10; 
     srand(time(NULL)); 
     FILE *f1, *f2, *f3; 
     f1 = fopen("b_b.txt", "a"); 
     f2 = fopen("b_w.txt", "a"); 
     f3 = fopen("b_a.txt", "a"); 
-    n = 10; 
     
     while (n <= 30000) 
     { 
         arr = (int *)malloc(sizeof(int) * n); 
-        for (int i = 0; i < n; i++) 
-            *(arr + i) = n - i; 
-        count = 0; 
-        // worst case 
-        bubblesort(arr, n); 
-        fprintf(f2, "%d\t%d\n", n, count); 
 
         // best case 
         count = 0; 
-        for (int i = 0; i < n; i++) 
-            *(arr + i) = i + 1; 
+        for (int i = 0; i < n; i++)
+            arr[i] = i + 1; 
         bubblesort(arr, n); 
         fprintf(f1, "%d\t%d\n", n, count); 
 
-        // AVG case 
-        for (int i = 0; i < n; i++) 
-            *(arr + i) = rand() % n; 
+        // worst case 
         count = 0; 
+        for (int i = 0; i < n; i++)
+            arr[i] = n - i;  
+        bubblesort(arr, n); 
+        fprintf(f2, "%d\t%d\n", n, count); 
+
+        // AVG case 
+        count = 0;
+        for (int i = 0; i < n; i++) 
+            arr[i] = rand() % n; 
         bubblesort(arr, n); 
         fprintf(f3, "%d\t%d\n", n, count); 
         
