@@ -26,26 +26,31 @@ void main() {
     n = 5;
 
     while (n <= 1024) {
+
         arr = (int *)malloc(n * sizeof(int));
+        
+        //best-case
         for (int i = 0; i < n; i++) {
-            *(arr + i) = 1;
+            arr[i] = 1;
         }   
         r = linearSearch(arr, n, 1);
         fprintf(f1, "%d\t%d\n", n, r);
 
+        //average-case
         for (int i = 0; i < n; i++) {
-            *(arr + i) = rand() % n;
+            arr[i] = rand() % n;
         }
-        key = *(arr + (n - 1) / 2);
+        key = arr[(n - 1) / 2];
         r = linearSearch(arr, n, key);
         fprintf(f2, "%d\t%d\n", n, r);
 
+        //Worst-case
         for (int i = 0; i < n; i++) {
-            *(arr + i) = 0;
+            arr[i] = 0;
         }
         r = linearSearch(arr, n, 1);
         fprintf(f3, "%d\t%d\n", n, r);
-        n = n * 2;
+        n *= 2;
         free(arr);
     }
     fclose(f1);
