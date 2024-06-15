@@ -46,11 +46,9 @@ void analysis(int choice) {
     for (i = 10; i < 100; i += 10) {
         maxcount = 0;
         mincount = 10000;
-        for (j = 2; j <= i; j++) {
-            for (k = 2; k <= i; k++) {
+        for (m = 2; m <= i; m++) {
+            for (n = 2; n <= i; n++) {
                 count = 0;
-                m = j;
-                n = k;
                 switch (choice) {
                     case 1:
                         count = euclid(m, n);
