@@ -4,9 +4,9 @@
 
 int test = 0;
 
-float euclid(int m, int n) {
+int euclid(int m, int n) {
     int r;
-    float count = 0;
+    int count = 0;
     while (n) {
         count++;
         r = m % n;
@@ -18,8 +18,8 @@ float euclid(int m, int n) {
     return count;
 }
 
-float consec(int m, int n) {
-    float count = 0;
+int consec(int m, int n) {
+    int count = 0;
     int min = m < n ? m : n;
     while (1) {
         count++;
@@ -35,8 +35,8 @@ float consec(int m, int n) {
     } 
 }
 
-float modified(int m, int n) {
-    float count = 1;
+int modified(int m, int n) {
+    int count = 1;
     while (m != n) {
         (m > n) ? (m = m - n) : (n = n - m);
         count++;
