@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Set variables
-filename="Linear-Search"
-xrange="[0:700]"
-yrange="[-50:800]"
-b_file="l_b.txt"
-w_file="l_w.txt"
-a_file="l_a.txt"
+filename="String-Matching"
+xrange="[-50:1200]"
+yrange="[-10000:300000]"
+b_file="sm_b.txt"
+w_file="sm_w.txt"
+a_file="sm_a.txt"
 
 # Gnuplot commands
 gnuplot << EOF
