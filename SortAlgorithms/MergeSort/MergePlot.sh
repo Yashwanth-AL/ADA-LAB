@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Set variables
-filename="Linear-Search"
-xrange="[0:700]"
-yrange="[-50:800]"
-b_file="l_b.txt"
-w_file="l_w.txt"
-a_file="l_a.txt"
+filename="Merge-Sort"
+xrange="[0:1100]"
+yrange="[0:10000]"
+b_file="m_b.txt"
+w_file="m_w.txt"
+a_file="m_a.txt"
 
 # Gnuplot commands
 gnuplot << EOF
