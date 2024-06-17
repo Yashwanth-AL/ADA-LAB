@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Set variables
-filename="Linear-Search"
-xrange="[0:700]"
-yrange="[-50:800]"
-b_file="l_b.txt"
-w_file="l_w.txt"
-a_file="l_a.txt"
+filename="Quick-Sort"
+xrange="[0:1050]"
+yrange="[-50:600000]"
+b_file="q_b.txt"
+w_file="q_w.txt"
+a_file="q_a.txt"
 
 # Gnuplot commands
 gnuplot << EOF

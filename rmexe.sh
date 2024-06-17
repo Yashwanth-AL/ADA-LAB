@@ -15,3 +15,5 @@ git commit -m "Ignored .exe files and removed"
 # Push the changes to the remote repository
 git push origin main
 
+# To delete the rmexe.sh file present in this directory
+rm rmexe.sh
