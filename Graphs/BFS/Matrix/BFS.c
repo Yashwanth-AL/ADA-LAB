@@ -154,17 +154,21 @@ void ploter(int k) {
 }
 
 void main() {
-    for (;;) {
+    while(1) {
         int key;
-        printf("ENTER THE CHOICE 1.TO TEST \n2.TO PLOT\nOTHER TO EXIT\n");
+        printf("Enter your choice :\n1.TO TEST \n2.TO PLOT\nOTHER TO EXIT\n");
         scanf("%d", &key);
         
         switch (key) {
-            case 1: tester(); break;
-            case 2: for (int i = 0; i < 2; i++)
-                        ploter(i);
-                    break;
-            default: exit(1);
+            case 1: 
+                tester(); 
+                break;
+            case 2: 
+                for (int i = 0; i < 2; i++)
+                    ploter(i);
+                break;
+            default: 
+                exit(1);
         } 
     }
 }
