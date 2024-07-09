@@ -2,7 +2,7 @@
 
 # Set variables
 filename="BFS - Matrix"
-xrange="[0:120]"
+xrange="[0:11]"
 yrange="[0:120]"
 b_file="bfs_b.txt"
 w_file="bfs_w.txt"
