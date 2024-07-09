@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set variables
-filename="DFS - Matrix"
+filename="DFS - LinkedList"
 xrange="[0:11]"
 yrange="[0:120]"
 b_file="dfs_b.txt"

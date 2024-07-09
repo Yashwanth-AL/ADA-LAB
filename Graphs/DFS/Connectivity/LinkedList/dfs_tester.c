@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
-{
-    int info;
-    struct node *next;
+struct node {
+    int data;
+    struct node *link;
 };
 
 struct Graph
@@ -15,21 +14,22 @@ struct Graph
     struct node **adjLists;
 };
 
-typedef struct node *Node;
+typedef struct node Node;
+typedef struct Graph Graph;
 
-Node createnode(int n)
+Node *createnode(int data)
 {
-    Node nn = (Node)malloc(sizeof(struct node));
-    nn->info = n;
-    nn->next = NULL;
-    return nn;
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->link = NULL;
+    return newNode;
 }
 
-struct Graph *createGraph(int vertices)
+Graph *createGraph(int vertices)
 {
-    struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
+    Graph *graph = (Graph *)malloc(sizeof(Graph));
     graph->vertices = vertices;
-    graph->adjLists = (struct node **)malloc(vertices * sizeof(struct node *));
+    graph->adjLists = (Node **)malloc(vertices * sizeof(Node));
     graph->visit = (int *)malloc(vertices * sizeof(int));
 
     for (int i = 0; i < vertices; i++)
@@ -44,8 +44,7 @@ int count = 0, iscyclic = 0;
 
 void DFS(struct Graph *graph, int vertex, int parent)
 {
-    // struct node* adjList = graph->adjLists[vertex];
-    struct node *temp = graph->adjLists[vertex];
+    Node *temp = graph->adjLists[vertex];
 
     count++;
     graph->visit[vertex] = 1;
@@ -53,8 +52,8 @@ void DFS(struct Graph *graph, int vertex, int parent)
 
     while (temp != NULL)
     {
-        int connectedVertex = temp->info;
-        if (graph->visit[connectedVertex] == 1 && connectedVertex != parent)
+        int connectedVertex = temp->data;
+        if (connectedVertex != parent && graph->visit[connectedVertex] == 1)
         {
             iscyclic = 1;
         }
@@ -62,18 +61,18 @@ void DFS(struct Graph *graph, int vertex, int parent)
         {
             DFS(graph, connectedVertex, vertex);
         }
-        temp = temp->next;
+        temp = temp->link;
     }
 }
 
 int main()
 {
     int n;
-    printf("ENTER THE NUMBER OF VERTICES\n");
+    printf("Enter the number of vertices\n");
     scanf("%d", &n);
     struct Graph *g = createGraph(n);
 
-    printf("Enter the adjacency LIST \n");
+    printf("Enter the adjacency list \n");
     for (int i = 0; i < g->vertices; i++)
     {
         printf("Enter 1 for the vertices adjacent to vertex %c\n", i + 65);
@@ -84,9 +83,9 @@ int main()
             scanf("%d", &key);
             if (key == 1)
             {
-                Node nn = createnode(j);
-                nn->next = g->adjLists[i];
-                g->adjLists[i] = nn;
+                Node *newNode = createnode(j);
+                newNode->link = g->adjLists[i];
+                g->adjLists[i] = newNode;
             }
         }
     }
@@ -94,32 +93,28 @@ int main()
     printf("\n");
     for (int i = 0; i < g->vertices; i++)
     {
-        Node temp = g->adjLists[i];
-        printf("THE VERTEX ADJACENT TO %c : ", i + 65);
+        Node *temp = g->adjLists[i];
+        printf("The vertex adjaacent to %c : ", i + 65);
         while (temp != NULL)
         {
-            printf("%c ", temp->info + 65);
-            temp = temp->next;
+            printf("%c ", temp->data + 65);
+            temp = temp->link;
         }
         printf("\n");
     }
 
     int dfscount = 0;
-    printf("\nDFS TRAVERSAL STARTING FROM NODE %c\n", 65);
+    printf("\nDFS Traversal starting from Node %c\n", 65);
     DFS(g, 0, -1);
     dfscount++;
-    if (count == g->vertices)
-    {
-        printf("\nTHE GRAPH IS CONNECTED\n");
+    if (count == g->vertices) {
+        printf("\nThe graph is connected.\n");
     }
-    else
-    {
-        printf("\nTHE GRAPH IS NOT CONNECTED\n");
+    else {
+        printf("\nThe graph is not connected\n");
         int start = 1;
-        while (count != g->vertices)
-        {
-            if (g->visit[start] != 1)
-            {
+        while (count != g->vertices) {
+            if (g->visit[start] != 1) {
                 printf("\n");
                 DFS(g, start, -1);
                 dfscount++;
@@ -129,13 +124,9 @@ int main()
     }
 
     if (iscyclic == 1)
-    {
-        printf("\nTHE GRAPH HAS A CYCLE\n");
-    }
+        printf("\nThe graph has a cycle\n");
     else
-    {
-        printf("\nTHE GRAPH DOESN'T HAVE A CYCLE\n");
-    }
+        printf("\nThe graph doesn't have a cycle.\n");
 
     return 0;
 }
