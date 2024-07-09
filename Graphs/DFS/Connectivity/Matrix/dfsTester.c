@@ -1,40 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-int graph[100][100], visited[100], isCyclic = 0;
-int dfsCount = 0, count = 0;
-int dcount = 0;
-int path[100];
-int d;
+int visited[100], graph[100][100];
+int count = 0, op_count = 0;   
+int isCyclic = 0;
 
-void dfs(int n, int start, int parent) {
+void dfs(int n, int start, int parent){
     visited[start] = 1;
-    path[start] = 1;
     count++;
-    printf("--> %c ", start + 65);
+    printf("-->%c ", start + 65);
 
-    for (int i = 0; i < n; i++) {
-        if (d == 1) {
-            if (i != parent && graph[start][i] && visited[i] == 1 && path[i] == 1)
+    for(int i = 0; i < n; i++){
+        op_count++;
+        if(i != parent && graph[start][i] && visited[i])
                 isCyclic = 1;
-        } else {
-            if (i != parent && graph[start][i] && visited[i])
-                isCyclic = 1;
-        }
-        dcount++;
-        if (graph[start][i] && visited[i] == 0)
+        if(graph[start][i] && visited[i] == 0)
             dfs(n, i, start);
     }
-    path[start] = 0;
 }
 
 void main() {
-    int n, start;
-    dfsCount = 0;
-    count = 0;
-    dcount = 0;
-    d = 0;
 
+    int n, dfsCount = 0; //dfsCount is used to calculate number of connected components
     printf("Enter the number of nodes in the graph:\n");
     scanf("%d", &n);
 
@@ -44,11 +31,7 @@ void main() {
             scanf("%d", &graph[i][j]);
         }
         visited[i] = 0;
-        path[i] = 0;
     }
-
-    printf("Enter 1 if the graph is directed, otherwise enter 0:\n");
-    scanf("%d", &d);
 
     printf("The adjacency matrix:\n");
     for (int i = 0; i < n; i++) {
@@ -58,16 +41,15 @@ void main() {
         printf("\n");
     }
 
-    isCyclic = 0;
     printf("\nDFS traversal starting from node %c\n", 65);
     dfs(n, 0, -1);
-    dfsCount++;
-
+    dfsCount++; 
+    
     if (count == n)
-        printf("\nThe graph is connected\n");
+        printf("The graph is connected\n");
     else {
-        printf("\nThe graph is not connected\n");
-        start = 1;
+        printf("The graph is not connected\n");
+        int start = 1;
         while (count != n) {
             if (visited[start] != 1) {
                 printf("\n");
@@ -78,10 +60,11 @@ void main() {
         }
     }
 
-    printf("\nThe number of components is %d\n", dfsCount);
+    printf("The number of components is %d\n", dfsCount);
 
     if (isCyclic)
-        printf("\nThe graph is cyclic\n");
+        printf("The graph is cyclic\n");
     else
-        printf("\nThe graph is not cyclic\n");
+        printf("The graph is not cyclic\n");
 }
+
