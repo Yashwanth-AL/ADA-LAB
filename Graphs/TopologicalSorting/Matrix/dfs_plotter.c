@@ -1,70 +1,86 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #define MAX 100
 
-int graph[MAX][MAX], visited[MAX], path[MAX], count = 0;
+int graph[MAX][MAX], visited[MAX], path[MAX];
 int stack[MAX], top = -1;
-int c = 0;
+int isCyclic = 0, op_count = 0;
 
 void dfs(int n, int start) {
     visited[start] = 1;
     path[start] = 1;
+
     for (int i = 0; i < n; i++) {
-        count++;
-        if (graph[start][i] && visited[i] == 1 && path[i] == 1)
-            c = 1;
-        if (graph[start][i] && visited[i] == 0)
+        op_count++;
+        if (graph[start][i] && visited[i] && path[i]) {
+            isCyclic = 1;
+        }
+        if (graph[start][i] && !visited[i]) {
             dfs(n, i);
+        }
     }
+
     path[start] = 0;
     stack[++top] = start;
 }
 
-void ploter(int k) {
+void reset(int vertex) { 
+    for (int i = 0; i < vertex; i++) {
+        visited[i] = 0;
+        path[i] = 0;
+    }
+    top = -1;
+    isCyclic = 0;
+    op_count = 0;
+}
+
+void plotter(int type) {
     FILE *f1 = fopen("dfs_b.txt", "a");
     FILE *f2 = fopen("dfs_w.txt", "a");
-    int v, start;
+    int vertex, count;
+
     for (int i = 1; i <= 10; i++) {
-        v = i;
-        int *arr[v];
-        for (int i = 0; i < v; i++)
-            arr[i] = (int *)malloc(sizeof(int) * v);
-        if (k == 0) {
-            for (int i = 0; i < v; i++) {
-                for (int j = 0; j < v; j++) {
-                    if (i != j) {
-                        arr[i][j] = 1;
-                    } else {
-                        arr[i][j] = 0;
-                    }
+        vertex = i;
+
+        for (int r = 0; r < vertex; r++) {
+            for (int c = 0; c < vertex; c++) {
+                if (type == 0) { // Best case
+                    graph[r][c] = (r != c) ? 1 : 0;
+                } else { // Worst case
+                    graph[r][c] = (c == r + 1) ? 1 : 0;
                 }
             }
         }
-        if (k == 1) {
-            for (int i = 0; i < v; i++) {
-                for (int j = 0; j < v; j++)
-                    arr[i][j] = 0;
-            }
-            for (int i = 0; i < v - 1; i++) {
-                arr[i][i + 1] = 1;
-            }
-        }
+
+        // Reset the state
+        reset(vertex);
+
+        // Perform DFS
         count = 0;
-        for (int i = 0; i < v; i++) {
-            if (visited[i] == 0)
-                dfs(v, i);
+        for (int j = 0; j < vertex; j++) {
+            if (!visited[j]) {
+                dfs(vertex, j);
+            }
         }
-        if (k == 0)
-            fprintf(f2, "%d\t%d\n", v, count);
-        else
-            fprintf(f1, "%d\t%d\n", v, count);
-        // printf("%d\t%d\n",v,orderCount);
+
+        // Record the count
+        if (isCyclic) {
+            count = -1; // Indicate a cycle
+        }
+
+        if (type == 0) {
+            fprintf(f2, "%d\t%d\n", vertex, op_count);
+        } else {
+            fprintf(f1, "%d\t%d\n", vertex, op_count);
+        }
     }
     fclose(f1);
     fclose(f2);
 }
 
-void main() {
-    for (int i = 0; i < 2; i++)
-        ploter(i);
+int main() {
+    printf("Generating best case and worst case files...\n");
+    plotter(0);
+    plotter(1);
+    return 0;
 }
