@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
-{
+struct node {
     int info;
     struct node *next;
 };
 
-struct Graph
-{
+struct Graph {
     int vertices;
     int *visit;
     struct node **adjLists;

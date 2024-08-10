@@ -21,24 +21,24 @@ void swap(struct vertex *a, struct vertex *b) {
 }
 
 void heapify(struct vertex arr[], int n, int i) {
-    int largest = i;
+    int smallest = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
     heapcount++;
 
-    if (left < n && arr[left].dist < arr[largest].dist)
-        largest = left;
+    if (left < n && arr[left].dist < arr[smallest].dist)
+        smallest = left;
 
-    if (right < n && arr[right].dist < arr[largest].dist)
-        largest = right;
+    if (right < n && arr[right].dist < arr[smallest].dist)
+        smallest = right;
 
-    if (largest != i) {
-        swap(&arr[i], &arr[largest]);
-        heapify(arr, n, largest);
+    if (smallest != i) {
+        swap(&arr[i], &arr[smallest]);
+        heapify(arr, n, smallest);
     }
 }
 
-void heapSort(struct vertex arr[], int n) {
+void buildHeap(struct vertex arr[], int n) {
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(arr, n, i);
     }
@@ -48,33 +48,34 @@ void heapSort(struct vertex arr[], int n) {
 
 void makegraph() {
     // Make Graph
-    printf("Enter the total number of vertices:");
+    printf("Enter the total number of vertices: ");
     scanf("%d", &n);
 
     printf("Enter the cost matrix of the Graph\n");
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
             scanf("%d", &cost[i][j]);
-            if (cost[i][j] == 0)
+            if (cost[i][j] == 0 && i != j) // No self-loops; 0 means no edge
                 cost[i][j] = INT_MAX;
         }
     }
 
-    // Initialise the source vertex distance to 0 and rest all to infinity(INT_MAX)
-    printf("Enter the source vertex:");
+    // Initialize the source vertex distance to 0 and rest all to infinity (INT_MAX)
+    printf("Enter the source vertex: ");
     scanf("%d", &src);
 
     for (i = 0; i < n; i++) {
         d[i] = INT_MAX;
+        removed[i] = 0;
     }
     d[src] = 0;
 }
 
-// returns the min of the heap and heapifies the rest of the elements
-ver deleteheap(ver heap[]) {
+// Returns the min of the heap and heapifies the rest of the elements
+ver deleteMin(ver heap[]) {
     ver min = heap[0];
     heap[0] = heap[heapsize - 1];
-    heapsize = heapsize - 1;
+    heapsize--;
     heapify(heap, heapsize, 0);
     return min;
 }
@@ -89,10 +90,10 @@ void dijkstra() {
     heapsize = n;
 
     // Build min-heap
-    heapSort(heap, heapsize);
+    buildHeap(heap, heapsize);
 
     while (count < n) {
-        ver minvertex = deleteheap(heap);
+        ver minvertex = deleteMin(heap);
         int u = minvertex.id;
         removed[u] = 1;
         count++;
@@ -100,11 +101,9 @@ void dijkstra() {
         for (i = 0; i < n; i++) {
             if (!removed[i] && cost[u][i] != INT_MAX) {
                 graphcount++;
+                if (d[u] + cost[u][i] < d[i]) {
+                    d[i] = d[u] + cost[u][i];
 
-                if ((d[u] + cost[u][i]) < d[i]) {
-                    d[i] = (d[u] + cost[u][i]);
-
-                    // Update the distance in heap
                     for (int o = 0; o < heapsize; o++) {
                         if (heap[o].id == i) {
                             heap[o].dist = d[i];
@@ -112,8 +111,8 @@ void dijkstra() {
                         }
                     }
 
-                    // Re-heapify after distance update
-                    heapSort(heap, heapsize);
+                    // Rebuild heap after distance update
+                    buildHeap(heap, heapsize);
                 }
             }
         }
@@ -129,7 +128,7 @@ void run() {
 
     dijkstra();
 
-    printf("Shortest path from vertex %d:\n", src);
+    printf("Shortest paths from vertex %d:\n", src);
     for (i = 0; i < n; i++) {
         if (src != i)
             printf("%d -> %d = %d\n", src, i, d[i]);
@@ -139,24 +138,23 @@ void run() {
     printf("Operation count = %d\n", max);
 }
 
-void main() {
+int main() {
     FILE *f1;
-    f1 = fopen("dijkstras.txt", "a");
-    int ch;
+    f1 = fopen("dijkstrasgraph.txt", "a"); // Open the file once before the loop
 
+    int ch;
     while (1) {
         printf("Enter choice: 1 to continue, 0 to exit\n");
         scanf("%d", &ch);
 
-        switch (ch) {
-            case 1:
-                run();
-                fprintf(f1, "%d\t%d\n", n, max);
-                break;
-            default:
-                exit(0);
+        if (ch == 1) {
+            run();
+            fprintf(f1, "%d\t%d\n", n, max); // Write to the file inside the loop after each run
+        } else {
+            break; // Exit the loop
         }
     }
 
-    fclose(f1);
+    fclose(f1); // Close the file after the loop ends
+    return 0;
 }
