@@ -5,12 +5,10 @@ int graph[100][100], visited[100];
 int op_count = 0, dfsCount = 0, count = 0;
 int isCyclic = 0;
 
-void dfs(int n, int start, int parent)
-{
+void dfs(int n, int start, int parent) {
     visited[start] = 1;
     count++;
-    for (int i = 0; i < n; i++)
-    {   
+    for (int i = 0; i < n; i++) {   
         op_count++;
         if (i != parent && graph[start][i] && visited[i])
             isCyclic = 1;
@@ -32,10 +30,10 @@ void plotter(int type) {
         if (type == 0) { //Creates a complete graph
             for (int i = 0; i < vertices; i++) {
                 for (int j = 0; j < vertices; j++) {
-                    if (i != j)
-                        graph[i][j] = 1;
-                    else
+                    if (i == j)
                         graph[i][j] = 0;
+                    else
+                        graph[i][j] = 1;
                 }
                 visited[i] = 0;
             }

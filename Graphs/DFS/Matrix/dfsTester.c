@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 int visited[100], graph[100][100];
-int count = 0, op_count = 0;   
+int count = 0, op_count = 0;   //count is used to caluclate number of nodes visited in each call of the dfs function
 int isCyclic = 0;
 
 void dfs(int n, int start, int parent){
