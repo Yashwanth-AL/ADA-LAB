@@ -29,9 +29,8 @@ int consec(int m, int n) {
                 printf("GCD = %d\n", min);
                 return count;
             }
-            min --;
-        } else
-            min --;
+        }   
+        min --;
     } 
 }
 
