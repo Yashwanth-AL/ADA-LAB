@@ -2,73 +2,71 @@
 #include <stdlib.h>
 #include <time.h>
 
-int count, count2 = 0;
+int op_count, count = 0;
 
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-    return;
+void swap(int *x, int *y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
 }
 
-void heapify(int *heap, int n, int root) {
+void heapify(int *arr, int n, int root) {
     int largest = root;
     int left = 2 * root + 1;
     int right = 2 * root + 2;
 
     if (left < n) {
-        count++;
-        if (heap[left] > heap[largest]) {
+        op_count++;
+        if (arr[left] > arr[largest]) {
             largest = left;
         }
     }
 
     if (right < n) {
-        count++;
-        if (heap[right] > heap[largest]) {
+        op_count++;
+        if (arr[right] > arr[largest]) {
             largest = right;
         }
     }
 
     if (largest != root) {
-        swap(&heap[root], &heap[largest]);
-        heapify(heap, n, largest);
+        swap(&arr[root], &arr[largest]);
+        heapify(arr, n, largest);
     }
 }
 
-void heapSort(int *heap, int n) {
+void heapSort(int *arr, int n) {
     for (int i = (n / 2) - 1; i >= 0; i--) {
-        heapify(heap, n, i);
+        heapify(arr, n, i);
     }
 
-    count2 = count;
-    count = 0;
+    count = op_count;
+    op_count = 0;
 
     for (int i = n - 1; i >= 0; i--) {
-        swap(&heap[0], &heap[i]);
-        heapify(heap, i, 0);
+        swap(&arr[0], &arr[i]);
+        heapify(arr, i, 0);
     }
 }
 
 int max(int a, int b) {
-    int temp = a > b ? a : b;
-    return temp;
+    return (a > b) ? a : b;
 }
 
 void main() {
     int *arr, n;
 
-    printf("ENTER THE NUMBER OF ELEMENTS\n");
+    printf("enter the number of elements\n");
     scanf("%d", &n);
 
     arr = (int *)malloc(sizeof(int) * n);
 
-    printf("ENTER THE ELEMENTS OF THE ARRAY\n");
+    printf("enter the elements of the array\n");
     for (int i = 0; i < n; i++) {
         scanf("%d", &arr[i]);
     }
 
-    printf("THE ELEMENTS OF THE ARRAY BEFORE SORTING\n");
+    printf("the elements of the array before sorting\n");
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
@@ -76,9 +74,11 @@ void main() {
 
     heapSort(arr, n);
 
-    printf("THE ELEMENTS OF THE ARRAY AFTER SORTING\n");
+    printf("the elements of the array after sorting\n");
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\n");
+
+    free(arr);
 }

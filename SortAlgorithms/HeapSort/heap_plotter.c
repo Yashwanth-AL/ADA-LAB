@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-int count, count2 = 0;
+int op_count, count = 0;
 
 void swap(int *a, int *b) {
     int temp = *a;
@@ -17,14 +17,14 @@ void heapify(int *heap, int n, int root) {
     int right = 2 * root + 2;
 
     if (left < n ) {
-        count++;
+        op_count++;
         if (heap[left] > heap[largest]) {
             largest = left;
         }
     }
 
     if (right < n ) {
-        count++;
+        op_count++;
         if (heap[right] > heap[largest]) {
             largest = right;
         }
@@ -41,8 +41,8 @@ void heapSort(int *heap, int n) {
         heapify(heap, n, i);
     }
 
-    count2 = count;
-    count = 0;
+    count = op_count;
+    op_count = 0;
 
     for (int i = n - 1; i >= 0; i--) {
         swap(&heap[0], &heap[i]);
@@ -69,32 +69,32 @@ void plotter() {
     while (n <= 1000) {
         arr = (int *)malloc(sizeof(int) * (n + 1));
 
-        // Best case
+        // Best case - decreasing order sorted array
         for (int i = 0; i < n; i++)
             arr[i] = n - i + 1;
 
-        count = 0;
+        op_count = 0;
         heapSort(arr, n);
-        count = max(count, count2);
-        fprintf(f1, "%d\t%d\n", n, count);
+        op_count = max(op_count, count);
+        fprintf(f1, "%d\t%d\n", n, op_count);
 
-        // Worst case
-        count = 0;
+        // Worst case - sorted array
         for (int i = 0; i < n; i++)
             arr[i] = i + 1;
 
+        op_count = 0;
         heapSort(arr, n);
-        count = max(count, count2);
-        fprintf(f2, "%d\t%d\n", n, count);
+        op_count = max(op_count, count);
+        fprintf(f2, "%d\t%d\n", n, op_count);
 
         // Average case
-        count = 0;
         for (int i = 0; i < n; i++)
             arr[i] = rand() % n;
 
+        op_count = 0;
         heapSort(arr, n);
-        count = max(count, count2);
-        fprintf(f3, "%d\t%d\n", n, count);
+        op_count = max(op_count, count);
+        fprintf(f3, "%d\t%d\n", n, op_count);
 
         n += 100;
         free(arr);
