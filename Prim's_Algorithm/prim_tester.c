@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int n, i, j, cost[10][10], cnt = 0, visited[10], removed[10];
-int heapsize = 0;
+int n, i, j, arr[10][10], edgeCount = 0, visited[10], removed[10];
+int heapSize = 0;
 
 struct edge {
-    int v;
+    int src;
     int dist;
-    int u;
-} heap[10], VT[10];
+    int dest;
+} heap[10], result[10];
 
 typedef struct edge edg;
 
@@ -20,20 +20,20 @@ void swap(struct edge *a, struct edge *b) {
     *b = temp;
 }
 
-void heapify(struct edge arr[], int n, int i) {
-    int largest = i;
-    int left = 2 * i + 1;
-    int right = 2 * i + 2;
+void heapify(struct edge arr[], int n, int root) {
+    int smallest = root;
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
 
-    if (left < n && arr[left].dist < arr[largest].dist)
-        largest = left;
+    if (left < n && arr[left].dist < arr[smallest].dist)
+        smallest = left;
 
-    if (right < n && arr[right].dist < arr[largest].dist)
-        largest = right;
+    if (right < n && arr[right].dist < arr[smallest].dist)
+        smallest = right;
 
-    if (largest != i) {
-        swap(&arr[i], &arr[largest]);
-        heapify(arr, n, largest);
+    if (smallest != root) {
+        swap(&arr[root], &arr[smallest]);
+        heapify(arr, n, smallest);
     }
 }
 
@@ -52,65 +52,65 @@ void makegraph() {
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
-            scanf("%d", &cost[i][j]);
-            if (cost[i][j] == 0)
-                cost[i][j] = INT_MAX;
+            scanf("%d", &arr[i][j]);
+            if (arr[i][j] == 0)
+                arr[i][j] = INT_MAX;
         }
     }
 }
 
-// returns the min of the heap //astey
+// Returns the min of the heap
 edg deleteheap(edg heap[]) {
     edg min = heap[0];
-    heap[0] = heap[heapsize - 1];
-    heapsize = heapsize - 1;
+    heap[0] = heap[heapSize - 1];
+    heapSize = heapSize - 1;
     return min;
 }
 
 void prim() {
-    // Appending Souce vertex to heap and incrementing heap size
+    // Appending Source vertex to heap and incrementing heap size
     visited[0] = 1;
-    heap[heapsize].v = -1;
-    heap[heapsize].u = 0;
-    heap[heapsize].dist = 0;
-    heapsize++;
+    heap[heapSize].src = -1;
+    heap[heapSize].dest = 0;
+    heap[heapSize].dist = 0;
+    heapSize++;
 
-    while (cnt != n) {
-        // fetching the min and appending to the visited array of edges and deleting from heap
+    while (edgeCount != n) {
+        // Fetching the min and appending to the visited array of edges and deleting from heap
         edg min = deleteheap(heap);
-        VT[cnt].v = min.v;
-        VT[cnt].u = min.u;
-        VT[cnt].dist = min.dist;
-        cnt++;
+        result[edgeCount].src = min.src;
+        result[edgeCount].dest = min.dest;
+        result[edgeCount].dist = min.dist;
+        edgeCount++;
 
-        int v = min.u;
+        int v = min.dest;
         removed[v] = 1;
 
         for (i = 1; i < n; i++) {
-            if (!visited[i] && cost[v][i] != INT_MAX && !removed[i]) {
-                // not visited and not removed from heap
+            if (!visited[i] && arr[v][i] != INT_MAX && !removed[i]) {
+                // Not visited and not removed from heap
                 visited[i] = 1;
-                heap[heapsize].v = v;
-                heap[heapsize].u = i;
-                heap[heapsize].dist = cost[v][i];
-                heapsize++;
+                heap[heapSize].src = v;
+                heap[heapSize].dest = i;
+                heap[heapSize].dist = arr[v][i];
+                heapSize++;
             }
 
-            if (visited[i] && cost[v][i] != INT_MAX && !removed[i]) {
-                // visited but not removed from heap --> scope for minimisation?
-                for (j = 0; j < heapsize; j++) {
-                    // finding that edge in the sorted heap
-                    if (heap[j].u == i && cost[v][i] < heap[j].dist) {
-                        // replacing if optimal
-                        heap[j].dist = cost[v][i];
-                        heap[j].v = v;
+            if (visited[i] && arr[v][i] != INT_MAX && !removed[i]) {
+                // Visited but not removed from heap --> Scope for minimization?
+                for (j = 0; j < heapSize; j++) {
+                    // Finding that edge in the sorted heap
+                    if (heap[j].dest == i && arr[v][i] < heap[j].dist) {
+                        // Replacing if optimal
+                        heap[j].dist = arr[v][i];
+                        heap[j].src = v;
                         break;
                     }
                 }
             }
         }
 
-        heapSort(heap, heapsize); // sorting after deletions and value modifications
+        heapSort(heap, heapSize); // Sorting after deletions and value modifications
     }
 }
 
@@ -119,9 +119,9 @@ void main() {
     makegraph();
     prim();
 
-    for (int i = 1; i < cnt; i++) {
-        printf("%c --> %c == %d\n", VT[i].v + 65, VT[i].u + 65, VT[i].dist);
-        sum += VT[i].dist;
+    for (int i = 1; i < edgeCount; i++) {
+        printf("%c --> %c == %d\n", result[i].src + 65, result[i].dest + 65, result[i].dist);
+        sum += result[i].dist;
     }
 
     printf("Minimum Distance is: %d", sum);
